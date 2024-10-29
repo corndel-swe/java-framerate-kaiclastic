@@ -8,42 +8,47 @@ import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
 public class D2E3 {
-  public static Javalin createApp() {
-    var app = Javalin.create(
-        config -> {
-          config.staticFiles.add("/exercises/public", Location.CLASSPATH);
+    public static Javalin createApp() {
+        var app = Javalin.create(
+                config -> {
+                    config.staticFiles.add("/exercises/public", Location.CLASSPATH);
 
-          var resolver = new ClassLoaderTemplateResolver();
-          resolver.setPrefix("/exercises/templates/");
-          resolver.setSuffix(".html");
-          resolver.setTemplateMode("HTML");
+                    var resolver = new ClassLoaderTemplateResolver();
+                    resolver.setPrefix("/exercises/templates/");
+                    resolver.setSuffix(".html");
+                    resolver.setTemplateMode("HTML");
 
-          var engine = new TemplateEngine();
-          engine.setTemplateResolver(resolver);
+                    var engine = new TemplateEngine();
+                    engine.setTemplateResolver(resolver);
 
-          config.fileRenderer(new JavalinThymeleaf(engine));
-        });
+                    config.fileRenderer(new JavalinThymeleaf(engine));
+                });
 
-    app.get(
-        "/d2e3",
-        ctx -> {
-          ctx.render("d2e3.html");
-        });
+        app.get(
+                "/d2e3",
+                ctx -> {
+                    ctx.render("d2e3.html");
+                });
 
-    app.post(
-        "/submit",
-        ctx -> {
-          // TODO: Open d2e3.html and follow the instructions
+        app.post(
+                "/submit",
+                ctx -> {
+                    // TODO: Open d2e3.html and follow the instructions
+                    ctx.render("d2e3.html");
 
-          // TODO: get the `name` and `email` from the form so that the below response
-          // works
+                    // TODO: get the `name` and `email` from the form so that the below response
+                    // works
 
-          var name = "";
-          var email = "";
+                    String name = ctx.formParamAsClass("name", String.class).get();
+                    String email = ctx.formParamAsClass("email", String.class).get();
 
-          ctx.result("Received: " + name + ", " + email);
-        });
+                    ctx.result("Received: " + name + ", " + email);
+                });
 
-    return app;
-  }
+        return app;
+    }
+    public static void main(String[] args) {
+        var javalin = createApp();
+        javalin.start(5050);
+    }
 }
