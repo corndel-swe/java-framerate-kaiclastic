@@ -69,4 +69,42 @@ public class MovieRepository {
       }
     }
   }
+
+  public static List<Movie> findByGenre(String genre) throws SQLException {
+    var query = "SELECT * FROM movies WHERE genre LIKE ?";
+
+    try (var con = DB.getConnection();
+         var stmt = con.prepareStatement(query)) {
+
+      stmt.setString(1,  "%" + genre + "%" );
+
+      try (var rs = stmt.executeQuery()) {
+        var movies = new ArrayList<Movie>();
+        while (rs.next()) {
+          var id = rs.getInt("id");
+          var title = rs.getString("title");
+          var releaseDate = rs.getString("releaseDate");
+          var ageRating = rs.getString("ageRating");
+          var runtime = rs.getInt("runtime");
+          var imageURL = rs.getString("imageURL");
+          var genreString = rs.getString("genre");
+
+          List<Genre> genres = Arrays.stream(genreString.split(","))
+                  .map(String::trim)
+                  .map(Genre::valueOf)
+                  .collect(Collectors.toList());
+
+          movies.add(new Movie(id, title, releaseDate, ageRating, genres, runtime, imageURL));
+        }
+        return movies;
+      }
+    }
+  }
+
+  public static void main(String[] args) throws SQLException {
+    var moviesBYgENRE = MovieRepository.findByGenre("Comedy");
+    System.out.println(moviesBYgENRE + "MOVIE FOUND");
+//    var movies= MovieRepository.findAll();
+//    System.out.println(movies + "MOVIEs FOUND");
+  }
 }

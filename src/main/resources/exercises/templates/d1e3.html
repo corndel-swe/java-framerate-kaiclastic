@@ -11,6 +11,8 @@
 
     <ul>
       <!-- TODO: loop through `shopping` and render each item inside a <li> element -->
+      <!-- //https://www.baeldung.com/thymeleaf-iteration -->
+      <li th:each="item : ${shopping}" th:text="${item}"></li>
     </ul>
   </body>
 </html>
