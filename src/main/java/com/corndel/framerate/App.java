@@ -9,6 +9,8 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
+import java.util.Map;
+
 public class App {
   public static void main(String[] args) {
     var javalin = createApp();
@@ -33,7 +35,8 @@ public class App {
 
     app.get("/", ctx -> {
         var movies = MovieRepository.findAll();
-        ctx.json(movies);
+        ctx.render("/allMovies.html", Map.of("movies", movies));
+//        ctx.json(movies);
     });
       app.get( "/movie/{id}",
                ctx -> {
