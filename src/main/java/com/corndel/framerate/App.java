@@ -1,6 +1,7 @@
 package com.corndel.framerate;
 
 import com.corndel.framerate.repositories.MovieRepository;
+import com.corndel.framerate.repositories.ReviewRepository;
 import io.javalin.http.HttpStatus;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -8,6 +9,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.template.JavalinThymeleaf;
+
+import java.util.Map;
 
 public class App {
   public static void main(String[] args) {
@@ -33,7 +36,8 @@ public class App {
 
     app.get("/", ctx -> {
         var movies = MovieRepository.findAll();
-        ctx.json(movies);
+        ctx.render("/allMovies.html", Map.of("movies", movies));
+//        ctx.json(movies);
     });
       app.get( "/movie/{id}",
                ctx -> {
@@ -48,6 +52,23 @@ public class App {
                   var genre  = ctx.pathParam("genre").substring(0, 1).toUpperCase() + ctx.pathParam("genre").substring(1);
                   var movieByGenre = MovieRepository.findByGenre(genre);
                   ctx.status(200).json(movieByGenre);
+              });
+
+      app.get(
+              "/reviews/{movieID}",
+              ctx -> {
+                  ctx.render("createReview.html");
+              });
+      app.post( "/reviews/{movieID}",
+
+              ctx -> {
+                  var id = Integer.parseInt(ctx.pathParam("movieID"));
+                  // take it from the html form
+                  int rating = Integer.parseInt(ctx.formParamAsClass("rating", String.class).get());
+                  String reviewText = ctx.formParamAsClass("reviewText", String.class).get();
+                  var movieReview = ReviewRepository.createReview(id,reviewText,rating);
+                  ctx.render("/createReview.html", Map.of("movieReview", movieReview));
+
               });
 
     return app;

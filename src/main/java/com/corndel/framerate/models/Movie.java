@@ -3,6 +3,8 @@ package com.corndel.framerate.models;
 import java.util.List;
 
 public class Movie {
+
+
   public enum Genre {
     Adventure,
     Action,
@@ -32,7 +34,8 @@ public class Movie {
       String ageRating,
       List<Genre> genres,
       int runtime,
-      String imageURL) {
+      String imageURL
+  ) {
     this.id = id;
     this.title = title;
     this.releaseDate = releaseDate;
@@ -49,4 +52,26 @@ public class Movie {
   public List<Genre> genres;
   public int runtime;
   public String imageURL;
+//  public List<String> reviews;
+public String reviews;
+  public Movie(
+          int id,
+          String title,
+          String releaseDate,
+          String ageRating,
+          List<Genre> genres,
+          int runtime,
+          String imageURL,
+          String reviews
+  ) {
+    this.id = id;
+    this.title = title;
+    this.releaseDate = releaseDate;
+    this.ageRating = ageRating;
+    this.genres = genres;
+    this.runtime = runtime;
+    this.imageURL = imageURL;
+    this.reviews = reviews;
+  }
+
 }

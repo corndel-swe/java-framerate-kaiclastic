@@ -12,7 +12,7 @@ import com.corndel.framerate.models.Movie.Genre;
 
 public class MovieRepository {
   public static List<Movie> findAll() throws SQLException {
-    var query = "SELECT * FROM MOVIES";
+    var query = "SELECT movies.*, reviews.content from MOVIES JOIN reviews ON movies.id = reviews.movieId;";
 
     try (var con = DB.getConnection();
         var stmt = con.createStatement();
@@ -26,14 +26,14 @@ public class MovieRepository {
         var ageRating = rs.getString("ageRating");
         var runtime = rs.getInt("runtime");
         var imageURL = rs.getString("imageURL");
-
         String genreString = rs.getString("genre");
+        var reviewContent =  rs.getString("content");
         List<Genre> genres = Arrays.stream(genreString.split(","))
             .map(String::trim)
             .map(Genre::valueOf)
             .collect(Collectors.toList());
 
-        users.add(new Movie(id, title, releaseDate, ageRating, genres, runtime, imageURL));
+        users.add(new Movie(id, title, releaseDate, ageRating, genres, runtime, imageURL,reviewContent));
       }
 
       return users;
