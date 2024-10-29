@@ -12,5 +12,15 @@
     TODO:
     - create a form which posts to the '/submit' endpoint
     - it should send a "name" and an "email"
-  --></body>
+  -->
+    <form action="/submit" method="post">
+      <label for="name">Name</label>
+      <textarea name="name" id="name"></textarea>
+
+      <label for="email">email</label>
+      <textarea name="email" id="email"></textarea>
+
+      <button type="submit">Submit!</button>
+    </form>
+  </body>
 </html>

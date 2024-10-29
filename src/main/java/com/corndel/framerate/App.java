@@ -44,6 +44,7 @@ public class App {
           var id = Integer.parseInt(ctx.pathParam("id"));
           var movieById = MovieRepository.findById(id);
           ctx.status(200).json(movieById);
+          ctx.render("movie.html");
       });
 
       app.get( "/movies/{genre}",
