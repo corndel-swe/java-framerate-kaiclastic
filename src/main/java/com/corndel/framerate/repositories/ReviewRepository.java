@@ -8,21 +8,21 @@ import java.util.Date;
 import java.util.List;
 
 public class ReviewRepository {
-//  public static List<Review> findByMovie(int movieId) throws SQLException {
-//    var query = "SELECT * FROM REVIEWS WHERE movieId = ?";
-//
-//    try (var con = DB.getConnection();
-//         var stmt = con.prepareStatement(query)) {
-//      stmt.setInt(1, movieId);
-//      try (var rs = stmt.executeQuery()) {
-//        var reviews = new ArrayList<Review>();
-//        while (rs.next()) {
-//          reviews.add(new Review());
-//        }
-//        return reviews;
-//      }
-//    }
-//  }
+  public static List<Review> findByMovie(int movieId) throws SQLException {
+    var query = "SELECT * FROM REVIEWS WHERE movieId = ?";
+
+    try (var con = DB.getConnection();
+         var stmt = con.prepareStatement(query)) {
+      stmt.setInt(1, movieId);
+      try (var rs = stmt.executeQuery()) {
+        var reviews = new ArrayList<Review>();
+        while (rs.next()) {
+          reviews.add(new Review());
+        }
+        return reviews;
+      }
+    }
+  }
 
   public static Review createReview(int movieID,String reviewText , int rating) throws SQLException {
     var query = "INSERT INTO reviews (movieId, content, rating) VALUES (?,?,?) RETURNING *";

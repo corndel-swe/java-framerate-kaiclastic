@@ -54,12 +54,18 @@ public class App {
                   ctx.status(200).json(movieByGenre);
               });
 
+      app.get(
+              "/reviews/{movieID}",
+              ctx -> {
+                  ctx.render("createReview.html");
+              });
       app.post( "/reviews/{movieID}",
+
               ctx -> {
                   var id = Integer.parseInt(ctx.pathParam("movieID"));
                   // take it from the html form
-                  int rating ;
-                  int reviewText;
+                  int rating = Integer.parseInt(ctx.formParamAsClass("rating", String.class).get());
+                  String reviewText = ctx.formParamAsClass("reviewText", String.class).get();
                   var movieReview = ReviewRepository.createReview(id,reviewText,rating);
                   ctx.render("/createReview.html", Map.of("movieReview", movieReview));
 
