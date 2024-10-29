@@ -1,6 +1,7 @@
 package com.corndel.framerate;
 
 import com.corndel.framerate.repositories.MovieRepository;
+import com.corndel.framerate.repositories.ReviewRepository;
 import io.javalin.http.HttpStatus;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -50,6 +51,17 @@ public class App {
                   var genre  = ctx.pathParam("genre").substring(0, 1).toUpperCase() + ctx.pathParam("genre").substring(1);
                   var movieByGenre = MovieRepository.findByGenre(genre);
                   ctx.status(200).json(movieByGenre);
+              });
+
+      app.post( "/reviews/{movieID}",
+              ctx -> {
+                  var id = Integer.parseInt(ctx.pathParam("movieID"));
+                  // take it from the html form
+                  int rating ;
+                  int reviewText;
+                  var movieReview = ReviewRepository.createReview(id,reviewText,rating);
+                  ctx.render("/createReview.html", Map.of("movieReview", movieReview));
+
               });
 
     return app;
